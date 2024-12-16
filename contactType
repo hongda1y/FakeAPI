@@ -1,20 +1,22 @@
-[
-  {
-    "id": 1,
-    "displayName": "Employee",
-    "displayIndex": 1,
-    "type": "Employee"
-  },
-  {
-    "id": 2,
-    "displayName": "Vendor",
-    "displayIndex": 2,
-    "type": "Vendor"
-  },
-  {
-    "id": 3,
-    "displayName": "Contractor",
-    "displayIndex": 3,
-    "type": "Contractor"
-  }
-]
+{
+  "results": [
+    {
+      "id": 1,
+      "displayName": "Employee",
+      "displayIndex": 1,
+      "type": "Employee"
+    },
+    {
+      "id": 2,
+      "displayName": "Vendor",
+      "displayIndex": 2,
+      "type": "Vendor"
+    },
+    {
+      "id": 3,
+      "displayName": "Contractor",
+      "displayIndex": 3,
+      "type": "Contractor"
+    }
+  ]
+}
