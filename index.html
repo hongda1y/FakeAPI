@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Open Cmedcc Meeting</title>
+  <title>Open Chatwave Meeting</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -14,43 +14,36 @@
       justify-content: center;
       background: #f2f2f2;
     }
-    button {
-      padding: 16px 24px;
+    .message {
       font-size: 18px;
-      background: #007aff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #005fd1;
+      color: #333;
+      text-align: center;
+      padding: 20px;
     }
   </style>
 </head>
 <body>
-  <button onclick="openCmedccApp()">Join Meeting in App</button>
+  <div class="message">
+    Opening your meeting in Chatwave...
+  </div>
 
   <script>
-    function openCmedccApp() {
+    window.onload = function openChatwaveApp() {
       const universalLink = "https://meet.cmedcc.com/id/8907845315?p=Y21lZGNjQDIwMjU4ODkxMDA=";
-      const fallbackAppStoreLink = "https://apps.apple.com/app/id0000000000"; // Replace with your App Store ID
+      const fallbackAppStoreLink = "https://apps.apple.com/us/app/chatwave/id6502752600";
 
-      // Fallback if app is not opened
       const fallbackTimeout = setTimeout(() => {
         window.location.href = fallbackAppStoreLink;
       }, 2000);
 
-      // Attempt to open the app
       window.location.href = universalLink;
 
-      // Cancel fallback if app opens (page is hidden)
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === 'hidden') {
           clearTimeout(fallbackTimeout);
         }
       });
-    }
+    };
   </script>
 </body>
 </html>
