@@ -27,6 +27,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      margin: 10px;
     }
 
     button:hover {
@@ -37,11 +38,12 @@
 <body>
   <div class="container">
     <h2>Join your meeting in Chatwave</h2>
-    <button onclick="openChatwaveApp()">Join Meeting</button>
+    <button onclick="openUniversalLink()">Join via Universal Link</button>
+    <button onclick="openCustomScheme()">Join via App Scheme</button>
   </div>
 
   <script>
-    function openChatwaveApp() {
+    function openUniversalLink() {
       const universalLink = "https://meet.cmedcc.com/id/8907845315?p=Y21lZGNjQDIwMjU4ODkxMDA=";
       const fallbackAppStoreLink = "https://apps.apple.com/us/app/chatwave/id6502752600";
 
@@ -50,6 +52,23 @@
       }, 2000);
 
       window.location.href = universalLink;
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === 'hidden') {
+          clearTimeout(fallbackTimeout);
+        }
+      });
+    }
+
+    function openCustomScheme() {
+      const customURL = "com.cmedcc.imapp://meeting?url=https://meet.cmedcc.com/id/8907845315?p=Y21lZGNjQDIwMjU4ODkxMDA=";
+      const fallbackAppStoreLink = "https://apps.apple.com/us/app/chatwave/id6502752600";
+
+      const fallbackTimeout = setTimeout(() => {
+        window.location.href = fallbackAppStoreLink;
+      }, 2000);
+
+      window.location.href = customURL;
 
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === 'hidden') {
