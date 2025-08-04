@@ -40,6 +40,7 @@
     <h2>Join your meeting in Chatwave</h2>
     <button onclick="openUniversalLink()">Join via Universal Link</button>
     <button onclick="openCustomScheme()">Join via App Scheme</button>
+    <button onclick="openAndroidIntent()">Join via Android App</button>
   </div>
 
   <script>
@@ -75,6 +76,12 @@
           clearTimeout(fallbackTimeout);
         }
       });
+    }
+
+    function openAndroidIntent() {
+      const intentURL = "intent://id/8907845315?p=Y21lZGNjQDIwMjU4ODkxMDA=#Intent;scheme=https;package=com.cmedcc.imapp;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.cmedcc.imapp;end";
+
+      window.location.href = intentURL;
     }
   </script>
 </body>
