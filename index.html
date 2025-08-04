@@ -14,11 +14,9 @@
       justify-content: center;
       background: #f2f2f2;
     }
-
     .container {
       text-align: center;
     }
-
     button {
       padding: 16px 24px;
       font-size: 18px;
@@ -29,7 +27,6 @@
       cursor: pointer;
       margin: 10px;
     }
-
     button:hover {
       background: #005fd1;
     }
@@ -39,37 +36,25 @@
   <div class="container">
     <h2>Join your meeting in Chatwave</h2>
     <button onclick="openUniversalLink()">Join via Universal Link</button>
-    <button onclick="openCustomScheme()">Join via App Scheme</button>
     <button onclick="openAndroidIntent()">Join via Android App</button>
+    <button onclick="openCustomScheme()">Join via Custom App Scheme</button>
   </div>
 
   <script>
+    const meetingUrl = "https://meet.cmedcc.com/meeting/?p=Y21lZGNjQDIwMjU4ODkxMDA%3D";
+    const androidPackage = "com.cmedcc.imapp";
+    const playStoreUrl = "https://play.google.com/store/apps/details?id=" + androidPackage;
+    const appStoreUrl = "https://apps.apple.com/us/app/chatwave/id6502752600";
+    const customSchemeUrl = "com.cmedcc.imapp://meeting?url=" + encodeURIComponent(meetingUrl);
+
     function openUniversalLink() {
-      const universalLink = "https://meet.cmedcc.com/id/8907845315?p=Y21lZGNjQDIwMjU4ODkxMDA=";
-      const fallbackAppStoreLink = "https://apps.apple.com/us/app/chatwave/id6502752600";
-
       const fallbackTimeout = setTimeout(() => {
-        window.location.href = fallbackAppStoreLink;
+        // Fallback for iOS or Android if app not installed
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        window.location.href = isAndroid ? playStoreUrl : appStoreUrl;
       }, 2000);
 
-      window.location.href = universalLink;
-
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === 'hidden') {
-          clearTimeout(fallbackTimeout);
-        }
-      });
-    }
-
-    function openCustomScheme() {
-      const customURL = "com.cmedcc.imapp://meeting?url=https://meet.cmedcc.com/id/8907845315?p=Y21lZGNjQDIwMjU4ODkxMDA=";
-      const fallbackAppStoreLink = "https://apps.apple.com/us/app/chatwave/id6502752600";
-
-      const fallbackTimeout = setTimeout(() => {
-        window.location.href = fallbackAppStoreLink;
-      }, 2000);
-
-      window.location.href = customURL;
+      window.location.href = meetingUrl;
 
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === 'hidden') {
@@ -79,9 +64,23 @@
     }
 
     function openAndroidIntent() {
-      const intentURL = "intent://id/8907845315?p=Y21lZGNjQDIwMjU4ODkxMDA=#Intent;scheme=https;package=com.cmedcc.imapp;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.cmedcc.imapp;end";
+      const intentUri = `intent://meeting/?p=Y21lZGNjQDIwMjU4ODkxMDA#Intent;scheme=https;package=${androidPackage};S.browser_fallback_url=${encodeURIComponent(meetingUrl)};end`;
+      window.location.href = intentUri;
+    }
 
-      window.location.href = intentURL;
+    function openCustomScheme() {
+      const fallbackTimeout = setTimeout(() => {
+        // Fallback to app store
+        window.location.href = playStoreUrl;
+      }, 2000);
+
+      window.location.href = customSchemeUrl;
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === 'hidden') {
+          clearTimeout(fallbackTimeout);
+        }
+      });
     }
   </script>
 </body>
