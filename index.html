@@ -2,90 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Join Chatwave Meeting</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Link Test</title>
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f2f2f2;
-    }
-    .container {
-      text-align: center;
-    }
     button {
-      padding: 16px 24px;
-      font-size: 18px;
-      background: #007aff;
-      color: white;
-      border: none;
+      display: block;
+      margin: 10px 0;
+      padding: 12px 18px;
+      font-size: 16px;
       border-radius: 8px;
+      border: none;
       cursor: pointer;
-      margin: 10px;
     }
-    button:hover {
-      background: #005fd1;
-    }
+    .primary { background-color: #4CAF50; color: white; }
+    .secondary { background-color: #2196F3; color: white; }
+    .fallback { background-color: #f39c12; color: white; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Join your meeting in Chatwave</h2>
-    <button onclick="openUniversalLink()">Join via Universal Link</button>
-    <button onclick="openAndroidIntent()">Join via Android App</button>
-    <button onclick="openCustomScheme()">Join via Custom App Scheme</button>
-     <p>
-    <a href="intent://meet.cmedcc.com/meeting?p=Y21lZGNjQDIwMjU4ODkxMDA%3D#Intent;scheme=https;package=com.cmedcc.im.app;end">
-      🚀 Force Open in App (Intent URL)
-    </a>
-  </p>
-  </div>
+  <h2>Universal Link Test</h2>
+
+  <button class="primary" onclick="openApp('universal')">🔗 Open in App (Universal Link)</button>
+  <button class="secondary" onclick="openApp('intent')">🚀 Force Open in App (Intent URL)</button>
+  <button class="fallback" onclick="openApp('fallback')">🌐 Open in App or Fallback</button>
 
   <script>
-    const meetingUrl = "https://meet.cmedcc.com/meeting/?p=Y21lZGNjQDIwMjU4ODkxMDA%3D";
-    const androidPackage = "com.cmedcc.imapp";
-    const playStoreUrl = "https://play.google.com/store/apps/details?id=" + androidPackage;
-    const appStoreUrl = "https://apps.apple.com/us/app/chatwave/id6502752600";
-    const customSchemeUrl = "com.cmedcc.imapp://meeting?url=" + encodeURIComponent(meetingUrl);
+    const currentUrl = window.location.href;
 
-    function openUniversalLink() {
-      const fallbackTimeout = setTimeout(() => {
-        // Fallback for iOS or Android if app not installed
-        const isAndroid = /Android/i.test(navigator.userAgent);
-        window.location.href = isAndroid ? playStoreUrl : appStoreUrl;
-      }, 2000);
-
-      window.location.href = meetingUrl;
-
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === 'hidden') {
-          clearTimeout(fallbackTimeout);
-        }
-      });
-    }
-
-    function openAndroidIntent() {
-      const intentUri = `intent://meeting/?p=Y21lZGNjQDIwMjU4ODkxMDA#Intent;scheme=https;package=${androidPackage};S.browser_fallback_url=${encodeURIComponent(meetingUrl)};end`;
-      window.location.href = intentUri;
-    }
-
-    function openCustomScheme() {
-      const fallbackTimeout = setTimeout(() => {
-        // Fallback to app store
-        window.location.href = playStoreUrl;
-      }, 2000);
-
-      window.location.href = customSchemeUrl;
-
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === 'hidden') {
-          clearTimeout(fallbackTimeout);
-        }
-      });
+    function openApp(type) {
+      if (type === "universal") {
+        window.location.href = currentUrl;
+      } else if (type === "intent") {
+        window.location.href =
+          "intent://" +
+          currentUrl.replace(/^https?:\/\//, "") +
+          "#Intent;scheme=https;package=com.cmedcc.im.app;end";
+      } else if (type === "fallback") {
+        window.location.href =
+          "intent://" +
+          currentUrl.replace(/^https?:\/\//, "") +
+          "#Intent;scheme=https;package=com.cmedcc.im.app;S.browser_fallback_url=" +
+          encodeURIComponent(currentUrl) +
+          ";end";
+      }
     }
   </script>
 </body>
